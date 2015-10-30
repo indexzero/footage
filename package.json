@@ -1,0 +1,25 @@
+{
+  "name": "footage",
+  "version": "0.0.0",
+  "description": "Get your Open Source game footage up to speed.",
+  "main": "index.js",
+  "scripts": {
+    "test": "istanbul ./node_modules/.bin/_mocha test/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/indexzero/footage.git"
+  },
+  "keywords": [
+    "open-source",
+    "npm",
+    "github",
+    "stats"
+  ],
+  "author": "Charlie Robbins <charlie.robbins@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/indexzero/footage/issues"
+  },
+  "homepage": "https://github.com/indexzero/footage#readme"
+}
