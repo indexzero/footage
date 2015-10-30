@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "Get your Open Source game footage up to speed.",
   "main": "index.js",
+  "bin": "bin/footage",
   "scripts": {
     "test": "istanbul ./node_modules/.bin/_mocha test/*.test.js"
   },
@@ -11,6 +12,8 @@
     "url": "git+https://github.com/indexzero/footage.git"
   },
   "keywords": [
+    "fun",
+    "silly",
     "open-source",
     "npm",
     "github",
@@ -21,5 +24,12 @@
   "bugs": {
     "url": "https://github.com/indexzero/footage/issues"
   },
-  "homepage": "https://github.com/indexzero/footage#readme"
+  "homepage": "https://github.com/indexzero/footage#readme",
+  "dependencies": {
+    "async": "^1.5.0",
+    "concat-stream": "^1.5.1",
+    "diagnostics": "^1.0.1",
+    "hyperquest": "^1.2.0",
+    "in-groups-of": "0.0.1"
+  }
 }
