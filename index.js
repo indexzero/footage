@@ -12,11 +12,11 @@ var footage = module.exports = function (user) {
 
   hyperquest.get(searchUri + '%22' + user + '%22')
     .pipe(concat({ encoding: 'string' }, function (data) {
-      footage.downloads(JSON.parse(data));
+      footage.downloads(JSON.parse(data), user);
     }));
 };
 
-footage.downloads = function (pkgs) {
+footage.downloads = function (pkgs, user) {
   var baseUri = 'https://api.npmjs.org/downloads/range';
   var groups = groupsOf(pkgs.rows.map(function (row) {
     return row.id;
@@ -62,12 +62,16 @@ footage.downloads = function (pkgs) {
       return acc;
     }, {});
 
+    var userTotal = 0;
     Object.keys(all)
       .sort(function (lname, rname) {
         return all[lname].total - all[rname].total;
       })
       .forEach(function (name) {
+        userTotal += all[name].total;
         console.log(name, all[name].total);
       });
+
+    console.log(user, userTotal);
   });
 };
