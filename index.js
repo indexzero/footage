@@ -7,6 +7,11 @@ var async = require('async'),
 
 var debug = require('diagnostics')('footage');
 
+//
+// Range cannot be larger than 365 days.
+//
+var RANGE = process.env.NPM_RANGE || 'last-month';
+
 var footage = module.exports = function (user) {
   var searchUri = 'https://skimdb.npmjs.com/registry/_design/app/_view/byUser?key='
 
@@ -64,6 +69,7 @@ footage.downloads = function (pkgs, user) {
 
     var userTotal = 0;
     Object.keys(all)
+      .filter(function (name) { return !!all[name]; })
       .sort(function (lname, rname) {
         return all[lname].total - all[rname].total;
       })
