@@ -3,10 +3,7 @@
   "version": "1.2.0",
   "description": "Get your Open Source game footage up to speed.",
   "main": "index.js",
-  "bin": "bin/footage",
-  "scripts": {
-    "test": "istanbul ./node_modules/.bin/_mocha test/*.test.js"
-  },
+  "bin": "bin/footage.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/indexzero/footage.git"

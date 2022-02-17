@@ -9,9 +9,6 @@ const debug = diagnostics('footage');
 // Range cannot be larger than 365 days.
 const RANGE = process.env.NPM_RANGE || 'last-month';
 
-// Naive regexp for separating scoped package names
-const isScoped = /^\@([^\/]+)\/([^\/]+)$/
-
 // Static npm mirror URLs
 const URLS = {
   SEARCH: 'https://registry.npmjs.org/-/v1/search',
@@ -26,103 +23,41 @@ const URLS = {
  */
 export default async function footage(user) {
   const results = getSearchIterator({ user });
-  const pkgs = {
-    scoped: [],
-    unscoped: []
-  };
+  const pkgs = [];
 
   for await (const { package: pkg } of results) {
-    const cohort = isScoped.test(pkg.name) ? 'scoped' : 'unscoped';
-    pkgs[cohort].push(pkg);
+    pkgs.push(pkg);
   }
 
   await downloadsFor({ pkgs, user });
 };
 
-
 async function downloadsFor({ pkgs, user }) {
-  const { scoped, unscoped } = pkgs;
-  await Promise.all([
-    downloadsForScoped({ pkgs: scoped, user }),
-    //downloadsForUnscoped({ pkgs: unscoped, user })
-  ]);
-
-};
-
-async function downloadsForScoped({ pkgs, user }) {
+  const pretty = new Intl.NumberFormat();
   const names = pkgs.map(p => p.name).sort();
 
   debug('Downloads for:', names);
 
   const dls = await mapLimit(names, 10, async function dlsFor(name) {
-    const res = await got(`${URLS.DOWNLOADS}/${RANGE}/${name}`).json();
-    console.log(res);
+    const target = `${URLS.DOWNLOADS}/${RANGE}/${name}`;
+
+    debug(`GET ${target}`);
+    const res = await got(target).json();
+    debug(`GET ${target} ok` , res);
+
     return res;
   });
+
+  const total = dls.reduce((sum, res) => {
+    const { downloads, package: name } = res;
+    console.log(`${name}: ${pretty.format(downloads)}`)
+    return sum + downloads;
+  }, 0);
+
+  console.log(`\n-----------------------------------------
+Total downloads for ${user} in ${RANGE}: ${pretty.format(total)}
+-----------------------------------------`);
 }
-
-async function downloadsForUnscoped({ pkgs, user }) {
-  const names = pkgs.map(p => p.name).sort();
-
-  debug('Downloads for:', names);
-  const groups = groupsOf(names, 50);
-
-
-
-  // //
-  // // Does a simple reduce on the download
-  // // keys of a single npm downloads request
-  // //
-  // function sumDownloads(names, stats) {
-  //   names.forEach(function (name) {
-  //     if (!stats[name]) { return; }
-  //     stats[name].total = Object.keys(stats[name].downloads || {})
-  //       .reduce(function (sum, key) {
-  //         return sum + stats[name].downloads[key].downloads;
-  //       }, 0);
-  //   });
-
-  //   return stats;
-  // }
-
-  // //
-  // // Gets the statistics for the specified
-  // // set of packages.
-  // //
-  // function getGroupStats(query) {
-  //   return function (pkgs, next) {
-  //     const uri = [baseUri, query, pkgs.join(',')].join('/');
-  //     debug('GET ' + uri);
-  //     hyperquest.get(uri)
-  //       .pipe(concat({ encoding: 'string' }, function (data) {
-  //         next(null, sumDownloads(pkgs, JSON.parse(data)));
-  //       }));
-  //   };
-  // }
-
-  // async.mapLimit(groups, 5, getGroupStats('last-month'), function (err, mapped) {
-  //   const all = mapped.reduce(function (acc, group) {
-  //     Object.keys(group).forEach(function (name) {
-  //       acc[name] = group[name];
-  //     });
-
-  //     return acc;
-  //   }, {});
-
-  //   const userTotal = 0;
-  //   Object.keys(all)
-  //     .filter(function (name) { return !!all[name]; })
-  //     .sort(function (lname, rname) {
-  //       return all[lname].total - all[rname].total;
-  //     })
-  //     .forEach(function (name) {
-  //       userTotal += all[name].total;
-  //       console.log(name, all[name].total);
-  //     });
-
-  //   console.log(user, userTotal);
-  // });
-};
 
 /**
  * Returns a Got-based iterator for returning pages of npm search results.
