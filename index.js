@@ -1,83 +1,113 @@
-'use strict';
+import got from 'got';
+import Bourne from '@hapi/bourne';
+import mapLimit from 'async/mapLimit.js';
+import groupsOf from 'in-groups-of';
 
-var async = require('async'),
-    concat = require('concat-stream'),
-    hyperquest = require('hyperquest'),
-    groupsOf = require('in-groups-of');
+import diagnostics from 'diagnostics';
+const debug = diagnostics('footage');
 
-var debug = require('diagnostics')('footage');
-
-//
 // Range cannot be larger than 365 days.
-//
-var RANGE = process.env.NPM_RANGE || 'last-month';
+const RANGE = process.env.NPM_RANGE || 'last-month';
 
-var footage = module.exports = function (user) {
-  var searchUri = 'https://skimdb.npmjs.com/registry/_design/app/_view/byUser?key='
-
-  hyperquest.get(searchUri + '%22' + user + '%22')
-    .pipe(concat({ encoding: 'string' }, function (data) {
-      footage.downloads(JSON.parse(data), user);
-    }));
+// Static npm mirror URLs
+const URLS = {
+  SEARCH: 'https://registry.npmjs.org/-/v1/search',
+  DOWNLOADS: 'https://api.npmjs.org/downloads/point'
 };
 
-footage.downloads = function (pkgs, user) {
-  var baseUri = 'https://api.npmjs.org/downloads/range';
-  var groups = groupsOf(pkgs.rows.map(function (row) {
-    return row.id;
-  }).sort(), 50);
+/**
+ * { function_description }
+ *
+ * @param      {<type>}   user    The user
+ * @return     {Promise}  { description_of_the_return_value }
+ */
+export default async function footage(user) {
+  const results = getSearchIterator({ user });
+  const pkgs = [];
 
-  //
-  // Does a simple reduce on the download
-  // keys of a single npm downloads request
-  //
-  function sumDownloads(names, stats) {
-    names.forEach(function (name) {
-      if (!stats[name]) { return; }
-      stats[name].total = Object.keys(stats[name].downloads || {})
-        .reduce(function (sum, key) {
-          return sum + stats[name].downloads[key].downloads;
-        }, 0);
-    });
-
-    return stats;
+  for await (const { package: pkg } of results) {
+    pkgs.push(pkg);
   }
 
-  //
-  // Gets the statistics for the specified
-  // set of packages.
-  //
-  function getGroupStats(query) {
-    return function (pkgs, next) {
-      var uri = [baseUri, query, pkgs.join(',')].join('/');
-      debug('GET ' + uri);
-      hyperquest.get(uri)
-        .pipe(concat({ encoding: 'string' }, function (data) {
-          next(null, sumDownloads(pkgs, JSON.parse(data)));
-        }));
-    };
-  }
+  await downloadsFor({ pkgs, user });
+};
 
-  async.mapLimit(groups, 5, getGroupStats('last-month'), function (err, mapped) {
-    var all = mapped.reduce(function (acc, group) {
-      Object.keys(group).forEach(function (name) {
-        acc[name] = group[name];
-      });
+async function downloadsFor({ pkgs, user }) {
+  const pretty = new Intl.NumberFormat();
+  const names = pkgs.map(p => p.name).sort();
 
-      return acc;
-    }, {});
+  debug('Downloads for:', names);
 
-    var userTotal = 0;
-    Object.keys(all)
-      .filter(function (name) { return !!all[name]; })
-      .sort(function (lname, rname) {
-        return all[lname].total - all[rname].total;
-      })
-      .forEach(function (name) {
-        userTotal += all[name].total;
-        console.log(name, all[name].total);
-      });
+  const dls = await mapLimit(names, 10, async function dlsFor(name) {
+    const target = `${URLS.DOWNLOADS}/${RANGE}/${name}`;
 
-    console.log(user, userTotal);
+    debug(`GET ${target}`);
+    const res = await got(target).json();
+    debug(`GET ${target} ok` , res);
+
+    return res;
   });
-};
+
+  const total = dls.reduce((sum, res) => {
+    const { downloads, package: name } = res;
+    console.log(`${name}: ${pretty.format(downloads)}`)
+    return sum + downloads;
+  }, 0);
+
+  console.log(`\n-----------------------------------------
+Total downloads for ${user} in ${RANGE}: ${pretty.format(total)}
+-----------------------------------------`);
+}
+
+/**
+ * Returns a Got-based iterator for returning pages of npm search results.
+ *
+ * See also:
+ *
+ * https://nodejs.org/api/stream.html#writablewritechunk-encoding-callback
+ * https://2ality.com/2019/11/nodejs-streams-async-iteration.html#writing-to-writable-streams
+ * https://github.com/sindresorhus/got/blob/main/documentation/4-pagination.md
+ * https://github.com/sindresorhus/got/blob/main/source/core/options.ts#L696
+ *
+ * @return {Iterator} Got-based iterator for abstracting over pages
+ */
+function getSearchIterator({ user, size = 100 }) {
+  const searchParams = {
+    text: `maintainer:${user}`,
+    from: 0,
+    size
+  };
+
+  debug(URLS.SEARCH, searchParams);
+  return got.paginate(URLS.SEARCH, {
+    method: 'get',
+    searchParams,
+    pagination: {
+      paginate: ({ response, currentItems }) => {
+        // If there are no more data, finish.
+        if (currentItems.length === 0) {
+          return false;
+        }
+
+        // Update the cursor by size in searchParams
+        searchParams.from += size;
+        debug(URLS.SEARCH, searchParams);
+
+        return { searchParams };
+      },
+      // Using `Bourne` to prevent prototype pollution.
+      transform: response => {
+        const res = Bourne.parse(response.body);
+        return res.objects;
+      },
+      // Wait 1s before making another request to prevent API rate limiting.
+      backoff: 1000,
+      // It is a good practice to set an upper limit of how many requests can be made.
+      // This way we can avoid infinite loops.
+      requestLimit: 285,
+      // In this case, we don't need to store all the items we receive.
+      // They are processed immediately.
+      stackAllItems: false
+    }
+  });
+}

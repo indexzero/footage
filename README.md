@@ -13,5 +13,10 @@ npm i -g footage
 footage [user]
 ```
 
+## Further reading
+
+* npm Registry [API](https://github.com/npm/registry/blob/master/docs/REGISTRY-API.md)
+* npm Registry [download-counts API](https://github.com/npm/registry/blob/master/docs/download-counts.md)
+
 ##### LICENSE: MIT
 ##### AUTHOR: [Charlie Robbins](https://github.com/indexzero)

@@ -3,10 +3,7 @@
   "version": "1.2.0",
   "description": "Get your Open Source game footage up to speed.",
   "main": "index.js",
-  "bin": "bin/footage",
-  "scripts": {
-    "test": "istanbul ./node_modules/.bin/_mocha test/*.test.js"
-  },
+  "bin": "bin/footage.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/indexzero/footage.git"
@@ -21,15 +18,16 @@
   ],
   "author": "Charlie Robbins <charlie.robbins@gmail.com>",
   "license": "MIT",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/indexzero/footage/issues"
   },
   "homepage": "https://github.com/indexzero/footage#readme",
   "dependencies": {
-    "async": "^1.5.0",
-    "concat-stream": "^1.5.1",
-    "diagnostics": "^1.0.1",
-    "hyperquest": "^1.2.0",
+    "@hapi/bourne": "^2.0.0",
+    "async": "^3.2.3",
+    "diagnostics": "^2.0.2",
+    "got": "^12.0.1",
     "in-groups-of": "0.0.1"
   }
 }
