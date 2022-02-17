@@ -1,6 +1,6 @@
 {
   "name": "footage",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "Get your Open Source game footage up to speed.",
   "main": "index.js",
   "bin": "bin/footage.js",
