@@ -21,15 +21,16 @@
   ],
   "author": "Charlie Robbins <charlie.robbins@gmail.com>",
   "license": "MIT",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/indexzero/footage/issues"
   },
   "homepage": "https://github.com/indexzero/footage#readme",
   "dependencies": {
-    "async": "^1.5.0",
-    "concat-stream": "^1.5.1",
-    "diagnostics": "^1.0.1",
-    "hyperquest": "^1.2.0",
+    "@hapi/bourne": "^2.0.0",
+    "async": "^3.2.3",
+    "diagnostics": "^2.0.2",
+    "got": "^12.0.1",
     "in-groups-of": "0.0.1"
   }
 }

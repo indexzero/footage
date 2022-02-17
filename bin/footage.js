@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-var footage = require('../');
+import footage from '../index.js';
 
 footage(process.argv[2]);
