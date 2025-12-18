@@ -1,0 +1,235 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      diagnostics:
+        specifier: ^2.0.2
+        version: 2.0.2
+      impit:
+        specifier: ^0.7.5
+        version: 0.7.5
+      impit-darwin-arm64:
+        specifier: ^0.7.5
+        version: 0.7.5
+      impit-linux-arm64-gnu:
+        specifier: ^0.7.5
+        version: 0.7.5
+      impit-linux-x64-gnu:
+        specifier: ^0.7.5
+        version: 0.7.5
+      p-queue:
+        specifier: ^8.0.1
+        version: 8.1.1
+      secure-json-parse:
+        specifier: ^2.7.0
+        version: 2.7.0
+
+packages:
+
+  color-convert@1.9.3:
+    resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
+
+  color-name@1.1.3:
+    resolution: {integrity: sha512-72fSenhMw2HZMTVHeCA9KCmpEIbzWiQsjN+BHcBbS9vr1mtt+vJjPdksIBNUmKAW8TFUDPJK5SUU3QhE9NEXDw==}
+
+  color-name@1.1.4:
+    resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
+
+  color-string@1.9.1:
+    resolution: {integrity: sha512-shrVawQFojnZv6xM40anx4CkoDP+fZsw/ZerEMsW/pyzsRbElpsL/DBVW7q3ExxwusdNXI3lXpuhEZkzs8p5Eg==}
+
+  color@3.2.1:
+    resolution: {integrity: sha512-aBl7dZI9ENN6fUGC7mWpMTPNHmWUSNan9tuWN6ahh5ZLNk9baLJOnSMlrQkHcrfFgz2/RigjUVAjdx36VcemKA==}
+
+  colorspace@1.1.4:
+    resolution: {integrity: sha512-BgvKJiuVu1igBUF2kEjRCZXol6wiiGbY5ipL/oVPwm0BL9sIpMIzM8IK7vwuxIIzOXMV3Ey5w+vxhm0rR/TN8w==}
+
+  diagnostics@2.0.2:
+    resolution: {integrity: sha512-gvnlQHwkWTOeSM1iRNEwPcUuUwlhovzbuQzalKrTbcJhI5cvhtkRVZZqomwZt4pCl2dvbsugD6yyu+66rtMy3Q==}
+
+  enabled@2.0.0:
+    resolution: {integrity: sha512-AKrN98kuwOzMIdAizXGI86UFBoo26CL21UM763y1h/GMSJ4/OHU9k2YlsmBpyScFo/wbLzWQJBMCW4+IO3/+OQ==}
+
+  eventemitter3@4.0.7:
+    resolution: {integrity: sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==}
+
+  eventemitter3@5.0.1:
+    resolution: {integrity: sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA==}
+
+  impit-darwin-arm64@0.7.5:
+    resolution: {integrity: sha512-H2HFQ+I8ZIApiSjuyS3WBtTMWHuLUCmMeGGINR8Gp+QDYN4GOpsuwUtKkOt02WsxdkBlCO8FErHXSFkLldusMg==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [darwin]
+
+  impit-darwin-x64@0.7.5:
+    resolution: {integrity: sha512-2KvQHwpo2XpiNfLjTblU3hq7AMZkw3aYXcPCYVbWzx7EewQqFwH8jqsx1oP+rtGGJf6QDAN4KtUhPEC6ouJu5g==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [darwin]
+
+  impit-linux-arm64-gnu@0.7.5:
+    resolution: {integrity: sha512-yyr9lxhXWJASyuoCQB+Tg9UFXNLamjx0AT6UPGHGOSfIt/Dc5sB06w1u7xK5igg4N5l3WyR7wNMNtS977UDhqw==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+
+  impit-linux-arm64-musl@0.7.5:
+    resolution: {integrity: sha512-N7K0EA7NFNlLOhHlZg21IEHMV4POMuwmPoEjW3drxrl6DuJcdDJzGg1fFygYwRmmIWu5OuhPbIyOoB+8pEfFAw==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+
+  impit-linux-x64-gnu@0.7.5:
+    resolution: {integrity: sha512-Afqc6KlYrdkV9UvhdBRLlC/PXbam1i5VOZwe60jzTMACVHTt/MvYTLSx+oAIqb6pZqPQ6LRGbLGMuLMDddCXbQ==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+
+  impit-linux-x64-musl@0.7.5:
+    resolution: {integrity: sha512-bf61Gg5FWRKeQXjzKtnLnlgXPQC0MoX8Pwu4b8aNMMzPXj71kRiWWtMGIdyeMGxDR/IcRQXDp+M5yz0WyysZfw==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+
+  impit-win32-arm64-msvc@0.7.5:
+    resolution: {integrity: sha512-6QWk/AxzNepRv3T4ZV0le7kYgOzSRR8MgaPYqdXr+NWz/Sta43+NJNn3IBXKoW+fzYs7rcaHd6X6cpmf20W+tw==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [win32]
+
+  impit-win32-x64-msvc@0.7.5:
+    resolution: {integrity: sha512-CAbkxZHmthPcq7M9ag7pq1PimTO8CEAjDmdvvAGt8lLjMtUet379g2hgPGXIFOBckwaPGVVME5mqWfDoJ1NrWw==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [win32]
+
+  impit@0.7.5:
+    resolution: {integrity: sha512-hvdVIxs8+tXlEvwfBjlceqtm3gGGNnvXtB0ol3I9B6bbz4PcZBeo4CqW4gVm9Lazyzpaqk3RRDMsOzWA2OeB8A==}
+    engines: {node: '>= 20'}
+
+  is-arrayish@0.3.4:
+    resolution: {integrity: sha512-m6UrgzFVUYawGBh1dUsWR5M2Clqic9RVXC/9f8ceNlv2IcO9j9J/z8UoCLPqtsPBFNzEpfR3xftohbfqDx8EQA==}
+
+  kuler@2.0.0:
+    resolution: {integrity: sha512-Xq9nH7KlWZmXAtodXDDRE7vs6DU1gTU8zYDHDiWLSip45Egwq3plLHzPn27NgvzL2r1LMPC1vdqh98sQxtqj4A==}
+
+  p-queue@8.1.1:
+    resolution: {integrity: sha512-aNZ+VfjobsWryoiPnEApGGmf5WmNsCo9xu8dfaYamG5qaLP7ClhLN6NgsFe6SwJ2UbLEBK5dv9x8Mn5+RVhMWQ==}
+    engines: {node: '>=18'}
+
+  p-timeout@6.1.4:
+    resolution: {integrity: sha512-MyIV3ZA/PmyBN/ud8vV9XzwTrNtR4jFrObymZYnZqMmW0zA8Z17vnT0rBgFE/TlohB+YCHqXMgZzb3Csp49vqg==}
+    engines: {node: '>=14.16'}
+
+  secure-json-parse@2.7.0:
+    resolution: {integrity: sha512-6aU+Rwsezw7VR8/nyvKTx8QpWH9FrcYiXXlqC4z5d5XQBDRqtbfsRjnwGyqbi3gddNtWHuEk9OANUotL26qKUw==}
+
+  simple-swizzle@0.2.4:
+    resolution: {integrity: sha512-nAu1WFPQSMNr2Zn9PGSZK9AGn4t/y97lEm+MXTtUDwfP0ksAIX4nO+6ruD9Jwut4C49SB1Ws+fbXsm/yScWOHw==}
+
+  storage-engine@3.0.7:
+    resolution: {integrity: sha512-V/jJykpPdsyDImLwu19syIAWn/Tb41tBDikQS+aQPH2h2OgqdLxwOg7wI9nPH3Y0Mh1ce566JZl2u+4eH1nAsg==}
+
+  text-hex@1.0.0:
+    resolution: {integrity: sha512-uuVGNWzgJ4yhRaNSiubPY7OjISw4sw4E5Uv0wbjp+OzcbmVU/rsT8ujgcXJhn9ypzsgr5vlzpPqP+MBBKcGvbg==}
+
+snapshots:
+
+  color-convert@1.9.3:
+    dependencies:
+      color-name: 1.1.3
+
+  color-name@1.1.3: {}
+
+  color-name@1.1.4: {}
+
+  color-string@1.9.1:
+    dependencies:
+      color-name: 1.1.4
+      simple-swizzle: 0.2.4
+
+  color@3.2.1:
+    dependencies:
+      color-convert: 1.9.3
+      color-string: 1.9.1
+
+  colorspace@1.1.4:
+    dependencies:
+      color: 3.2.1
+      text-hex: 1.0.0
+
+  diagnostics@2.0.2:
+    dependencies:
+      colorspace: 1.1.4
+      enabled: 2.0.0
+      kuler: 2.0.0
+      storage-engine: 3.0.7
+
+  enabled@2.0.0: {}
+
+  eventemitter3@4.0.7: {}
+
+  eventemitter3@5.0.1: {}
+
+  impit-darwin-arm64@0.7.5: {}
+
+  impit-darwin-x64@0.7.5:
+    optional: true
+
+  impit-linux-arm64-gnu@0.7.5: {}
+
+  impit-linux-arm64-musl@0.7.5:
+    optional: true
+
+  impit-linux-x64-gnu@0.7.5: {}
+
+  impit-linux-x64-musl@0.7.5:
+    optional: true
+
+  impit-win32-arm64-msvc@0.7.5:
+    optional: true
+
+  impit-win32-x64-msvc@0.7.5:
+    optional: true
+
+  impit@0.7.5:
+    optionalDependencies:
+      impit-darwin-arm64: 0.7.5
+      impit-darwin-x64: 0.7.5
+      impit-linux-arm64-gnu: 0.7.5
+      impit-linux-arm64-musl: 0.7.5
+      impit-linux-x64-gnu: 0.7.5
+      impit-linux-x64-musl: 0.7.5
+      impit-win32-arm64-msvc: 0.7.5
+      impit-win32-x64-msvc: 0.7.5
+
+  is-arrayish@0.3.4: {}
+
+  kuler@2.0.0: {}
+
+  p-queue@8.1.1:
+    dependencies:
+      eventemitter3: 5.0.1
+      p-timeout: 6.1.4
+
+  p-timeout@6.1.4: {}
+
+  secure-json-parse@2.7.0: {}
+
+  simple-swizzle@0.2.4:
+    dependencies:
+      is-arrayish: 0.3.4
+
+  storage-engine@3.0.7:
+    dependencies:
+      enabled: 2.0.0
+      eventemitter3: 4.0.7
+
+  text-hex@1.0.0: {}

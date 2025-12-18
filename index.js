@@ -1,10 +1,13 @@
-import got from 'got';
-import Bourne from '@hapi/bourne';
-import mapLimit from 'async/mapLimit.js';
-import groupsOf from 'in-groups-of';
+import { Impit } from 'impit';
+import sjson from 'secure-json-parse';
+import PQueue from 'p-queue';
 
 import diagnostics from 'diagnostics';
-const debug = diagnostics('footage');
+const _debug = diagnostics('footage');
+const debug = (...args) => _debug(`[${new Date().toISOString()}]`, ...args);
+
+// Create impit instance for HTTP requests
+const impit = new Impit({ browser: 'chrome' });
 
 // Range cannot be larger than 365 days.
 const RANGE = process.env.NPM_RANGE || 'last-month';
@@ -38,15 +41,57 @@ async function downloadsFor({ pkgs, user }) {
 
   debug('Downloads for:', names);
 
-  const dls = await mapLimit(names, 10, async function dlsFor(name) {
+  const dls = [];
+
+  // Rate limit: 1 request per 500ms (2 req/sec max)
+  const queue = new PQueue({
+    concurrency: 1,
+    interval: 500,
+    intervalCap: 1
+  });
+
+  async function fetchDownloads(name, retryCount = 0) {
     const target = `${URLS.DOWNLOADS}/${RANGE}/${name}`;
 
-    debug(`GET ${target}`);
-    const res = await got(target).json();
-    debug(`GET ${target} ok` , res);
+    debug(`GET ${target}${retryCount > 0 ? ` (retry ${retryCount})` : ''}`);
+    const response = await impit.fetch(target);
+    const body = await response.text();
 
+    // Delay after each request to avoid overwhelming the API
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    if (response.status === 429) {
+      // Exponential backoff: 10s * 2^retry, max 5 minutes
+      const backoff = Math.min(10000 * Math.pow(2, retryCount), 300000);
+      debug(`GET ${target} rate limited (429), waiting ${backoff / 1000}s before retry...`);
+      await new Promise(resolve => setTimeout(resolve, backoff));
+      // Retry immediately with incremented count
+      return fetchDownloads(name, retryCount + 1);
+    }
+
+    if (!response.ok) {
+      debug(`GET ${target} failed with status ${response.status}`);
+      return { downloads: 0, package: name };
+    }
+
+    const res = sjson.parse(body);
+    debug(`GET ${target} ok`, res);
     return res;
-  });
+  }
+
+  debug(`Processing ${names.length} packages`);
+
+  const promises = names.map(name =>
+    queue.add(() => fetchDownloads(name))
+      .then(res => dls.push(res))
+      .catch(err => {
+        debug(`Unexpected error for ${name}:`, err.message);
+        dls.push({ downloads: 0, package: name });
+      })
+  );
+
+  await Promise.all(promises);
+  await queue.onIdle();
 
   const total = dls.reduce((sum, res) => {
     const { downloads, package: name } = res;
@@ -60,54 +105,52 @@ Total downloads for ${user} in ${RANGE}: ${pretty.format(total)}
 }
 
 /**
- * Returns a Got-based iterator for returning pages of npm search results.
+ * Returns an async iterator for returning pages of npm search results.
  *
- * See also:
- *
- * https://nodejs.org/api/stream.html#writablewritechunk-encoding-callback
- * https://2ality.com/2019/11/nodejs-streams-async-iteration.html#writing-to-writable-streams
- * https://github.com/sindresorhus/got/blob/main/documentation/4-pagination.md
- * https://github.com/sindresorhus/got/blob/main/source/core/options.ts#L696
- *
- * @return {Iterator} Got-based iterator for abstracting over pages
+ * @return {AsyncGenerator} Async iterator for abstracting over pages
  */
-function getSearchIterator({ user, size = 100 }) {
+async function* getSearchIterator({ user, size = 100 }) {
   const searchParams = {
     text: `maintainer:${user}`,
     from: 0,
     size
   };
 
-  debug(URLS.SEARCH, searchParams);
-  return got.paginate(URLS.SEARCH, {
-    method: 'get',
-    searchParams,
-    pagination: {
-      paginate: ({ response, currentItems }) => {
-        // If there are no more data, finish.
-        if (currentItems.length === 0) {
-          return false;
-        }
+  const requestLimit = 285;
+  const backoff = 1000;
+  let requestCount = 0;
 
-        // Update the cursor by size in searchParams
-        searchParams.from += size;
-        debug(URLS.SEARCH, searchParams);
+  while (requestCount < requestLimit) {
+    const url = new URL(URLS.SEARCH);
+    url.searchParams.set('text', searchParams.text);
+    url.searchParams.set('from', searchParams.from.toString());
+    url.searchParams.set('size', searchParams.size.toString());
 
-        return { searchParams };
-      },
-      // Using `Bourne` to prevent prototype pollution.
-      transform: response => {
-        const res = Bourne.parse(response.body);
-        return res.objects;
-      },
-      // Wait 1s before making another request to prevent API rate limiting.
-      backoff: 1000,
-      // It is a good practice to set an upper limit of how many requests can be made.
-      // This way we can avoid infinite loops.
-      requestLimit: 285,
-      // In this case, we don't need to store all the items we receive.
-      // They are processed immediately.
-      stackAllItems: false
+    debug(URLS.SEARCH, searchParams);
+
+    const response = await impit.fetch(url.toString());
+    const body = await response.text();
+    // Using `secure-json-parse` to prevent prototype pollution.
+    const res = sjson.parse(body);
+    const items = res.objects;
+
+    // If there are no more data, finish.
+    if (!items || items.length === 0) {
+      return;
     }
-  });
+
+    // Yield each item individually
+    for (const item of items) {
+      yield item;
+    }
+
+    // Update the cursor by size in searchParams
+    searchParams.from += size;
+    requestCount++;
+
+    // Wait before making another request to prevent API rate limiting.
+    if (requestCount < requestLimit) {
+      await new Promise(resolve => setTimeout(resolve, backoff));
+    }
+  }
 }
