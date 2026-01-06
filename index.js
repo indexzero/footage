@@ -1,13 +1,10 @@
-import { Impit } from 'impit';
+import { fetch } from 'undici';
 import sjson from 'secure-json-parse';
 import PQueue from 'p-queue';
 
 import diagnostics from 'diagnostics';
 const _debug = diagnostics('footage');
 const debug = (...args) => _debug(`[${new Date().toISOString()}]`, ...args);
-
-// Create impit instance for HTTP requests
-const impit = new Impit({ browser: 'chrome' });
 
 // Range cannot be larger than 365 days.
 const RANGE = process.env.NPM_RANGE || 'last-month';
@@ -54,7 +51,7 @@ async function downloadsFor({ pkgs, user }) {
     const target = `${URLS.DOWNLOADS}/${RANGE}/${name}`;
 
     debug(`GET ${target}${retryCount > 0 ? ` (retry ${retryCount})` : ''}`);
-    const response = await impit.fetch(target);
+    const response = await fetch(target);
     const body = await response.text();
 
     // Delay after each request to avoid overwhelming the API
@@ -128,7 +125,7 @@ async function* getSearchIterator({ user, size = 100 }) {
 
     debug(URLS.SEARCH, searchParams);
 
-    const response = await impit.fetch(url.toString());
+    const response = await fetch(url.toString());
     const body = await response.text();
     // Using `secure-json-parse` to prevent prototype pollution.
     const res = sjson.parse(body);

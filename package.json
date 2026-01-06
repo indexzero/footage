@@ -25,11 +25,8 @@
   "homepage": "https://github.com/indexzero/footage#readme",
   "dependencies": {
     "diagnostics": "^2.0.2",
-    "impit": "^0.7.5",
-    "impit-darwin-arm64": "^0.7.5",
-    "impit-linux-arm64-gnu": "^0.7.5",
-    "impit-linux-x64-gnu": "^0.7.5",
     "p-queue": "^8.0.1",
-    "secure-json-parse": "^2.7.0"
+    "secure-json-parse": "^2.7.0",
+    "undici": "^7.2.0"
   }
 }

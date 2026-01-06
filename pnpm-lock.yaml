@@ -11,24 +11,15 @@ importers:
       diagnostics:
         specifier: ^2.0.2
         version: 2.0.2
-      impit:
-        specifier: ^0.7.5
-        version: 0.7.5
-      impit-darwin-arm64:
-        specifier: ^0.7.5
-        version: 0.7.5
-      impit-linux-arm64-gnu:
-        specifier: ^0.7.5
-        version: 0.7.5
-      impit-linux-x64-gnu:
-        specifier: ^0.7.5
-        version: 0.7.5
       p-queue:
         specifier: ^8.0.1
         version: 8.1.1
       secure-json-parse:
         specifier: ^2.7.0
         version: 2.7.0
+      undici:
+        specifier: ^7.2.0
+        version: 7.16.0
 
 packages:
 
@@ -62,58 +53,6 @@ packages:
   eventemitter3@5.0.1:
     resolution: {integrity: sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA==}
 
-  impit-darwin-arm64@0.7.5:
-    resolution: {integrity: sha512-H2HFQ+I8ZIApiSjuyS3WBtTMWHuLUCmMeGGINR8Gp+QDYN4GOpsuwUtKkOt02WsxdkBlCO8FErHXSFkLldusMg==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [darwin]
-
-  impit-darwin-x64@0.7.5:
-    resolution: {integrity: sha512-2KvQHwpo2XpiNfLjTblU3hq7AMZkw3aYXcPCYVbWzx7EewQqFwH8jqsx1oP+rtGGJf6QDAN4KtUhPEC6ouJu5g==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
-    os: [darwin]
-
-  impit-linux-arm64-gnu@0.7.5:
-    resolution: {integrity: sha512-yyr9lxhXWJASyuoCQB+Tg9UFXNLamjx0AT6UPGHGOSfIt/Dc5sB06w1u7xK5igg4N5l3WyR7wNMNtS977UDhqw==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [linux]
-
-  impit-linux-arm64-musl@0.7.5:
-    resolution: {integrity: sha512-N7K0EA7NFNlLOhHlZg21IEHMV4POMuwmPoEjW3drxrl6DuJcdDJzGg1fFygYwRmmIWu5OuhPbIyOoB+8pEfFAw==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [linux]
-
-  impit-linux-x64-gnu@0.7.5:
-    resolution: {integrity: sha512-Afqc6KlYrdkV9UvhdBRLlC/PXbam1i5VOZwe60jzTMACVHTt/MvYTLSx+oAIqb6pZqPQ6LRGbLGMuLMDddCXbQ==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
-    os: [linux]
-
-  impit-linux-x64-musl@0.7.5:
-    resolution: {integrity: sha512-bf61Gg5FWRKeQXjzKtnLnlgXPQC0MoX8Pwu4b8aNMMzPXj71kRiWWtMGIdyeMGxDR/IcRQXDp+M5yz0WyysZfw==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
-    os: [linux]
-
-  impit-win32-arm64-msvc@0.7.5:
-    resolution: {integrity: sha512-6QWk/AxzNepRv3T4ZV0le7kYgOzSRR8MgaPYqdXr+NWz/Sta43+NJNn3IBXKoW+fzYs7rcaHd6X6cpmf20W+tw==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [win32]
-
-  impit-win32-x64-msvc@0.7.5:
-    resolution: {integrity: sha512-CAbkxZHmthPcq7M9ag7pq1PimTO8CEAjDmdvvAGt8lLjMtUet379g2hgPGXIFOBckwaPGVVME5mqWfDoJ1NrWw==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
-    os: [win32]
-
-  impit@0.7.5:
-    resolution: {integrity: sha512-hvdVIxs8+tXlEvwfBjlceqtm3gGGNnvXtB0ol3I9B6bbz4PcZBeo4CqW4gVm9Lazyzpaqk3RRDMsOzWA2OeB8A==}
-    engines: {node: '>= 20'}
-
   is-arrayish@0.3.4:
     resolution: {integrity: sha512-m6UrgzFVUYawGBh1dUsWR5M2Clqic9RVXC/9f8ceNlv2IcO9j9J/z8UoCLPqtsPBFNzEpfR3xftohbfqDx8EQA==}
 
@@ -139,6 +78,10 @@ packages:
 
   text-hex@1.0.0:
     resolution: {integrity: sha512-uuVGNWzgJ4yhRaNSiubPY7OjISw4sw4E5Uv0wbjp+OzcbmVU/rsT8ujgcXJhn9ypzsgr5vlzpPqP+MBBKcGvbg==}
+
+  undici@7.16.0:
+    resolution: {integrity: sha512-QEg3HPMll0o3t2ourKwOeUAZ159Kn9mx5pnzHRQO8+Wixmh88YdZRiIwat0iNzNNXn0yoEtXJqFpyW7eM8BV7g==}
+    engines: {node: '>=20.18.1'}
 
 snapshots:
 
@@ -178,38 +121,6 @@ snapshots:
 
   eventemitter3@5.0.1: {}
 
-  impit-darwin-arm64@0.7.5: {}
-
-  impit-darwin-x64@0.7.5:
-    optional: true
-
-  impit-linux-arm64-gnu@0.7.5: {}
-
-  impit-linux-arm64-musl@0.7.5:
-    optional: true
-
-  impit-linux-x64-gnu@0.7.5: {}
-
-  impit-linux-x64-musl@0.7.5:
-    optional: true
-
-  impit-win32-arm64-msvc@0.7.5:
-    optional: true
-
-  impit-win32-x64-msvc@0.7.5:
-    optional: true
-
-  impit@0.7.5:
-    optionalDependencies:
-      impit-darwin-arm64: 0.7.5
-      impit-darwin-x64: 0.7.5
-      impit-linux-arm64-gnu: 0.7.5
-      impit-linux-arm64-musl: 0.7.5
-      impit-linux-x64-gnu: 0.7.5
-      impit-linux-x64-musl: 0.7.5
-      impit-win32-arm64-msvc: 0.7.5
-      impit-win32-x64-msvc: 0.7.5
-
   is-arrayish@0.3.4: {}
 
   kuler@2.0.0: {}
@@ -233,3 +144,5 @@ snapshots:
       eventemitter3: 4.0.7
 
   text-hex@1.0.0: {}
+
+  undici@7.16.0: {}
