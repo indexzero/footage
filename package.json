@@ -27,7 +27,7 @@
     "@hapi/bourne": "^2.0.0",
     "async": "^3.2.3",
     "diagnostics": "^2.0.2",
-    "got": "^12.0.1",
+    "impit": "^0.14.3",
     "in-groups-of": "0.0.1"
   }
 }

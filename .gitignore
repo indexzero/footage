@@ -28,3 +28,6 @@ node_modules
 
 # Ignore all data that we use for testing
 data/
+
+# footage results output
+*.jsonl
